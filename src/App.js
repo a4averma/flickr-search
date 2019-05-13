@@ -3,7 +3,7 @@ import Headroom from 'react-headroom';
 import 'normalize.css';
 import Header from './components/Header';
 import Image from 'react-graceful-image';
-import 'react-lazy-load-image-component/src/effects/blur.css';
+import ObserverWrapper from '@emarketeross/simple-react-intersection-observer';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -39,7 +39,12 @@ export default class App extends React.Component {
           var src = 'https://farm'+pic.farm+'.staticflickr.com/'+pic.server+'/'+pic.id+'_'+pic.secret+'.jpg';
           return(
           
-             <Image src={src} alt="Lazy Load Example"  style={{ alignSelf: 'center', margin: "10px"}} retry={{ count: 15, delay: 3, accumulate: "add" }}/>
+             <div style={{margin: "10px", width: "275px", height: '275px', border: '1px solid #ccc',textAlign: 'center', display: 'table-cell', verticalAlign: 'middle'}} >
+               <Image src={src} alt="Lazy Load Example" retry={{ count: 15, delay: 3, accumulate: "add" }} style={{ objectFit: 'none', 
+  objectPosition: 'center', 
+  height: '100%',
+  width: '100%'}}/>
+             </div>
            
             
           ) 
@@ -64,7 +69,12 @@ export default class App extends React.Component {
           var src = 'https://farm'+pic.farm+'.staticflickr.com/'+pic.server+'/'+pic.id+'_'+pic.secret+'.jpg';
           return(
             
-             <Image src={src} alt="Lazy Load Example"  style={{ alignSelf: 'center', margin: "10px"}} retry={{ count: 15, delay: 3, accumulate: "add" }}/>
+          <div style={{margin: "10px", width: "275px", height: '275px', border: '1px solid #ccc',textAlign: 'center', display: 'table-cell', verticalAlign: 'middle'}} >
+            <Image src={src} alt="Lazy Load Example" style={{ objectFit: 'none', 
+  objectPosition: 'center', 
+  height: '100%',
+  width: '100%'}} retry={{ count: 15, delay: 3, accumulate: "add" }}/>
+          </div>
       
             
           ) 
@@ -84,9 +94,12 @@ export default class App extends React.Component {
         <Header handlePhotoChange={this.handlePhotoChange}/>
       </Headroom>
   
-      <div style={{display: 'flex', flexWrap: 'wrap', padding: "0 4px", justifyContent: 'space-around', alignItems: 'space-around'}}>
+    
+      <div style={{display: 'flex', flexWrap: 'wrap', padding: "0 4px", justifyContent: 'space-between'}}>
         {this.state.photos}
       </div>
+
+ 
       
       </>
     );

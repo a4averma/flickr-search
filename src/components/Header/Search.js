@@ -7,7 +7,7 @@ export default class Search extends React.Component {
     query: ''
   }
   reloadImage = async () => {
-    AwesomeDebouncePromise(this.props.handlePhotoChange(this.state.query), 1000);
+   this.props.handlePhotoChange(this.state.query);
   }
 
   handleChange = event =>  {

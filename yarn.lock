@@ -910,6 +910,13 @@
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-9.0.1.tgz#c27b391d8457d1e893f1eddeaf5e5412d12ffbb5"
   integrity sha512-6It2EVfGskxZCQhuykrfnALg7oVeiI6KclWSmGDqB0AiInVrTGB9Jp9i4/Ad21u9Jde/voVQz6eFX/eSg/UsPA==
 
+"@emarketeross/simple-react-intersection-observer@^0.1.11":
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/@emarketeross/simple-react-intersection-observer/-/simple-react-intersection-observer-0.1.11.tgz#2ae54bba81051880ae96d98deed7bec1e17ea159"
+  integrity sha1-KuVLuoEFGICultmN7te+weF+oVk=
+  dependencies:
+    react-intersection-observer "^2.0.1"
+
 "@emotion/is-prop-valid@^0.7.3":
   version "0.7.3"
   resolved "https://registry.yarnpkg.com/@emotion/is-prop-valid/-/is-prop-valid-0.7.3.tgz#a6bf4fa5387cbba59d44e698a4680f481a8da6cc"
@@ -8375,6 +8382,11 @@ react-headroom@^2.2.8:
     prop-types "^15.5.8"
     raf "^3.3.0"
     shallowequal "^1.1.0"
+
+react-intersection-observer@^2.0.1:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/react-intersection-observer/-/react-intersection-observer-2.1.2.tgz#cc5d3377e7288e033468ebf1203a65652add3172"
+  integrity sha512-hbvsQc9JwUQOoib+eXaWiDEI4nrnKoLh0yb4NYL4NruDcnstEGWDEyoZTuHEcYqciuUbHyV4YwJ2gxn+L8CqoA==
 
 react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4:
   version "16.8.6"
