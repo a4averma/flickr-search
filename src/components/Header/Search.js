@@ -1,6 +1,5 @@
 import React from 'react';
 import {TextInput} from 'grommet';
-import AwesomeDebouncePromise from 'awesome-debounce-promise';
 
 export default class Search extends React.Component {
   state = {
