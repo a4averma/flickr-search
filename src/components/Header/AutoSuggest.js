@@ -71,12 +71,17 @@ export default class AutoSuggest extends React.Component {
       });
     }
   }
+  targetFocus = event => {
+    event.target.select();
+  };
   render() {
     const { value, suggestions } = this.state;
     const inputProps = {
       placeholder: "Type something to search...",
       value,
-      onChange: this.onChange
+      onChange: this.onChange,
+      autoFocus: "autofocus",
+      onFocus: this.targetFocus
     };
 
     return (

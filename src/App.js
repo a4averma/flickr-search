@@ -99,34 +99,17 @@ export default class App extends React.Component {
               ".jpg";
             return (
               <div
-                style={{
-                  margin: "10px",
-                  width: "300px",
-                  height: "300px",
-                  boxShadow: "5px 10px",
-                  textAlign: "center",
-                  display: "table-cell",
-                  verticalAlign: "middle",
-                  boxShadow:
-                    "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
-                  transition: "all 0.3s cubic-bezier(.25,.8,.25,1)",
-                  borderRadius: "4px"
-                }}
+                className="card"
                 onClick={() => this.openModal(pic.title, src)}
               >
                 <Image
                   src={src}
-                  alt="Lazy Load Example"
+                  alt={pic.title}
                   placeholderColor={
                     colours[Math.floor(Math.random() * colours.length)]
                   }
                   retry={{ count: 15, delay: 3, accumulate: "add" }}
-                  style={{
-                    objectFit: "cover",
-                    objectPosition: "center",
-                    height: "100%",
-                    width: "100%"
-                  }}
+                  className="image"
                 />
               </div>
             );
@@ -193,29 +176,13 @@ export default class App extends React.Component {
               ".jpg";
             return (
               <div
-                style={{
-                  margin: "10px",
-                  width: "300px",
-                  height: "300px",
-                  textAlign: "center",
-                  display: "table-cell",
-                  verticalAlign: "middle",
-                  boxShadow:
-                    "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
-                  transition: "all 0.3s cubic-bezier(.25,.8,.25,1)",
-                  borderRadius: "4px"
-                }}
+                className="card"
                 onClick={() => this.openModal(pic.title, src)}
               >
                 <Image
                   src={src}
-                  alt="Lazy Load Example"
-                  style={{
-                    objectFit: "cover",
-                    objectPosition: "center",
-                    height: "100%",
-                    width: "100%"
-                  }}
+                  alt={pic.title}
+                  className="image"
                   placeholderColor={
                     colours[Math.floor(Math.random() * colours.length)]
                   }
@@ -233,7 +200,11 @@ export default class App extends React.Component {
   render() {
     return (
       <>
-        <Headroom>
+        <Headroom
+          style={{
+            boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)"
+          }}
+        >
           <Header handlePhotoChange={this.handlePhotoChange} />
         </Headroom>
 
@@ -260,7 +231,7 @@ export default class App extends React.Component {
         >
           <Image
             src={this.state.picture}
-            alt="Lazy Load Example"
+            alt={this.state.title}
             placeholder={<Loader type="pacman" />}
             noLazyLoad={true}
             retry={{ count: 15, delay: 3, accumulate: "add" }}
