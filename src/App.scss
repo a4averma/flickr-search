@@ -1,6 +1,10 @@
 $primary-color: #ccc;
 @import "loaders.css/src/animations/pacman.scss";
+@import url("https://fonts.googleapis.com/css?family=Montserrat");
 
+* {
+  font-family: "Montserrat", sans-serif;
+}
 .loader-hidden {
   display: none;
 }
