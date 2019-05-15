@@ -193,7 +193,7 @@ export default class App extends React.Component {
     console.log("ScrollY", window.scrollY);
     console.log("Offset Height", document.body.offsetHeight);
     if (
-      window.innerHeight + window.scrollY - 2000 >=
+      window.innerHeight + window.scrollY + 1000 >=
       document.body.offsetHeight
     ) {
       this.reloadImage();
