@@ -231,8 +231,8 @@ export default class App extends React.Component {
         <Rodal
           visible={this.state.visible}
           onClose={this.hide}
-          width="90%"
-          height="90%"
+          width="100vw"
+          height="100vh"
         >
           <Image
             src={this.state.picture}
