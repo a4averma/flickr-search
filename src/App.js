@@ -171,7 +171,11 @@ export default class App extends React.Component {
             alt={this.state.title}
             retry={{ count: 15, delay: 3, accumulate: "add" }}
             className="modal-image"
+            placeholderColor="rgba(0,0,0,0)"
           />
+          <div style={{ top: "50%", zIndex: -5 }} className="loader-wrapper">
+            <Loader type="pacman" />
+          </div>
           <h4 style={{ textAlign: "center" }}>{this.state.title}</h4>
         </Rodal>
         <div style={{ top: "50%" }} className="loader-wrapper">
