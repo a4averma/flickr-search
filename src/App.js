@@ -188,23 +188,20 @@ export default class App extends React.Component {
       });
   };
   hide = () => this.setState({ visible: false });
+  handleScroll = () => {
+    if (
+      window.innerHeight + window.scrollY >=
+      document.getElementById("root").offsetHeight
+    ) {
+      alert("get ready");
+      this.reloadImage();
+    }
+  };
   componentDidMount() {
-    let self = this;
-    window.addEventListener(
-      "scroll",
-      function() {
-        if (
-          window.innerHeight + window.scrollY >=
-          document.getElementById("root").offsetHeight
-        ) {
-          self.reloadImage();
-        }
-      },
-      false
-    );
+    window.addEventListener("scroll", this.handleScroll);
   }
   componentWillUnmount() {
-    window.removeEventListener("scroll");
+    window.removeEventListener("scroll", this.handleScroll);
   }
   render() {
     return (
