@@ -189,14 +189,6 @@ export default class App extends React.Component {
   };
   hide = () => this.setState({ visible: false });
   handleScroll = () => {
-    if (this.state.visible) {
-      document.body.className += " " + "model-open";
-    } else {
-      document.body.className = document.body.className.replace(
-        "modal-open",
-        ""
-      );
-    }
     if (
       window.innerHeight + window.scrollY + 500 >=
       document.body.offsetHeight
@@ -231,7 +223,8 @@ export default class App extends React.Component {
             justifyContent: "center",
             marginLeft: "auto",
             marginRight: "auto",
-            overflow: "hidden"
+            overflow: "hidden",
+            position: this.state.visible ? "fixed" : "inherit"
           }}
         >
           {this.state.photos}
