@@ -139,7 +139,7 @@ export default class App extends React.Component {
     )
       .then(res => res.json())
       .then(res => {
-        this.setState({ loading: "Loading..." });
+        this.setState({ loading: <Loader type="pacman" /> });
         if (res.code === 3) {
           this.setState({ photos: <h1>Found nothing</h1>, loading: "" });
         } else if (res.photos.photo.length === 0) {
@@ -183,7 +183,7 @@ export default class App extends React.Component {
             );
           });
           let newArray = this.state.photos.concat(imageArray);
-          this.setState({ photos: newArray });
+          this.setState({ photos: newArray, loading: "" });
         }
       });
   };
@@ -214,18 +214,8 @@ export default class App extends React.Component {
         </Headroom>
 
         <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            width: "100%",
-            flexGrow: 0,
-            flexShrink: 0,
-            justifyContent: "center",
-            marginLeft: "auto",
-            marginRight: "auto",
-            overflow: "hidden",
-            position: this.state.visible ? "fixed" : "inherit"
-          }}
+          className="container"
+          style={{ position: this.state.visible ? "fixed" : "inherit" }}
         >
           {this.state.photos}
         </div>
@@ -238,21 +228,13 @@ export default class App extends React.Component {
           <Image
             src={this.state.picture}
             alt={this.state.title}
-            placeholder={<Loader type="pacman" />}
-            noLazyLoad={true}
             retry={{ count: 15, delay: 3, accumulate: "add" }}
-            style={{
-              objectFit: "contain",
-              height: "90%",
-              width: "100%"
-            }}
+            className="modal-image"
           />
           <h4 style={{ textAlign: "center" }}>{this.state.title}</h4>
         </Rodal>
-        <div style={{ position: "absolute", left: "50%", top: "50%" }}>
-          <div style={{ position: "relative", left: "-50%" }}>
-            {this.state.loading}
-          </div>
+        <div style={{ top: "50%" }} className="loader-wrapper">
+          <div className="loader-container">{this.state.loading}</div>
         </div>
       </>
     );

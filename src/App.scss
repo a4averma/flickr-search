@@ -5,6 +5,34 @@ $primary-color: #ccc;
 * {
   font-family: "Montserrat", sans-serif;
 }
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  flex-grow: 0;
+  flex-shrink: 0;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+}
+
+.modal-image {
+  object-fit: contain;
+  height: 90%;
+  width: 100%;
+}
+
+.loader-wrapper {
+  position: fixed;
+  left: 50%;
+  .loader-container {
+    position: relative;
+    left: -50%;
+  }
+}
+
 .loader-hidden {
   display: none;
 }
