@@ -25,10 +25,15 @@ export default class App extends React.Component {
   };
 
   openModal = (title, src) => {
+    document.body.style.overflow = "hidden";
+
     this.setState({ visible: true, picture: src, title });
   };
 
-  hide = () => this.setState({ visible: false });
+  hide = () => {
+    document.body.style.overflow = "inherit";
+    this.setState({ visible: false });
+  };
 
   loadImages = query => {
     if (query) {
@@ -168,12 +173,7 @@ export default class App extends React.Component {
           />
         </Headroom>
 
-        <div
-          className="container"
-          style={{ position: this.state.visible ? "fixed" : "inherit" }}
-        >
-          {this.state.photos}
-        </div>
+        <div className="container">{this.state.photos}</div>
         <Rodal
           visible={this.state.visible}
           onClose={this.hide}
