@@ -200,6 +200,9 @@ export default class App extends React.Component {
       false
     );
   }
+  componentWillUnmount() {
+    window.removeEventListener("scroll");
+  }
   render() {
     return (
       <>
