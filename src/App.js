@@ -193,7 +193,10 @@ export default class App extends React.Component {
     window.addEventListener(
       "scroll",
       function() {
-        if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+        if (
+          window.innerHeight + window.scrollY >=
+          document.getElementById("root").offsetHeight
+        ) {
           self.reloadImage();
         }
       },
