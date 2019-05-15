@@ -12,7 +12,7 @@ import Header from "./components/Header";
 import "./App.scss";
 
 var colours = ["#69779B", "#9692AF", "#ACDBDF", "#D7EAEA"];
-
+var id = 0;
 export default class App extends React.Component {
   state = {
     photos: [],
@@ -67,11 +67,12 @@ export default class App extends React.Component {
                 "_" +
                 pic.secret +
                 ".jpg";
+              id++;
               return (
                 <div
                   className="card"
                   onClick={() => this.openModal(pic.title, src)}
-                  key={index}
+                  key={id}
                 >
                   <Image
                     src={src}
