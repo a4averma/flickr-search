@@ -31,59 +31,66 @@ export default class App extends React.Component {
   hide = () => this.setState({ visible: false });
 
   loadImages = query => {
-    return fetch(
-      `https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=68718a972b685914728b4a71cd542e28&tags=${query}&page=${
-        this.state.page
-      }&format=json&nojsoncallback=1`
-    )
-      .then(res => res.json())
-      .then(res => {
-        this.setState({ loading: <Loader type="pacman" /> });
-        if (res.code === 3) {
-          this.setState({ photos: <h1>Found nothing</h1>, loading: "" });
-        } else if (res.photos.photo.length === 0) {
-          this.setState({
-            photos: (
-              <p>
-                Your search -{" "}
-                <span style={{ fontWeight: 800 }}>{this.state.query}</span> -
-                did not match any tags.
-              </p>
-            ),
-            loading: ""
-          });
-        } else {
-          var imageArray = res.photos.photo.map(pic => {
-            var src =
-              "https://farm" +
-              pic.farm +
-              ".staticflickr.com/" +
-              pic.server +
-              "/" +
-              pic.id +
-              "_" +
-              pic.secret +
-              ".jpg";
-            return (
-              <div
-                className="card"
-                onClick={() => this.openModal(pic.title, src)}
-              >
-                <Image
-                  src={src}
-                  alt={pic.title}
-                  className="image"
-                  placeholderColor={
-                    colours[Math.floor(Math.random() * colours.length)]
-                  }
-                  retry={{ count: 15, delay: 3, accumulate: "add" }}
-                />
-              </div>
-            );
-          });
-          return imageArray;
-        }
-      });
+    if (query) {
+      return fetch(
+        `https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=68718a972b685914728b4a71cd542e28&tags=${query}&page=${
+          this.state.page
+        }&format=json&nojsoncallback=1`
+      )
+        .then(res => res.json())
+        .then(res => {
+          this.setState({ loading: <Loader type="pacman" /> });
+          if (res.code === 3) {
+            this.setState({ photos: <h1>Found nothing</h1>, loading: "" });
+            return null;
+          } else if (res.photos.photo.length === 0) {
+            this.setState({
+              photos: (
+                <h5>
+                  Your search -{" "}
+                  <span style={{ fontWeight: 800 }}>{this.state.query}</span> -
+                  did not match any tags.
+                </h5>
+              ),
+              loading: ""
+            });
+            return null;
+          } else {
+            var imageArray = res.photos.photo.map((pic, index) => {
+              var src =
+                "https://farm" +
+                pic.farm +
+                ".staticflickr.com/" +
+                pic.server +
+                "/" +
+                pic.id +
+                "_" +
+                pic.secret +
+                ".jpg";
+              return (
+                <div
+                  className="card"
+                  onClick={() => this.openModal(pic.title, src)}
+                  key={index}
+                >
+                  <Image
+                    src={src}
+                    alt={pic.title}
+                    className="image"
+                    placeholderColor={
+                      colours[Math.floor(Math.random() * colours.length)]
+                    }
+                    retry={{ count: 15, delay: 3, accumulate: "add" }}
+                  />
+                </div>
+              );
+            });
+            return imageArray;
+          }
+        });
+    } else {
+      return null;
+    }
   };
 
   handlePhotoChange = async query => {
@@ -94,17 +101,19 @@ export default class App extends React.Component {
       photos: []
     });
     let imageArray = await this.loadImages(query);
-    this.setState({ photos: imageArray, page: 1 });
-    if (this.state.query) {
-      if (window.localStorage.getItem("query") === null) {
-        let queries = [];
-        queries.push(this.state.query);
-        window.localStorage.setItem("query", JSON.stringify(queries));
-      } else {
-        let storedQueries = JSON.parse(window.localStorage.getItem("query"));
-        storedQueries.push(this.state.query);
-        let uniqueQueries = [...new Set(storedQueries)];
-        window.localStorage.setItem("query", JSON.stringify(uniqueQueries));
+    if (imageArray) {
+      this.setState({ photos: imageArray, page: 1 });
+      if (this.state.query) {
+        if (window.localStorage.getItem("query") === null) {
+          let queries = [];
+          queries.push(this.state.query);
+          window.localStorage.setItem("query", JSON.stringify(queries));
+        } else {
+          let storedQueries = JSON.parse(window.localStorage.getItem("query"));
+          storedQueries.push(this.state.query);
+          let uniqueQueries = [...new Set(storedQueries)];
+          window.localStorage.setItem("query", JSON.stringify(uniqueQueries));
+        }
       }
     }
     this.setState({ loading: "" });
@@ -116,11 +125,13 @@ export default class App extends React.Component {
       loading: <Loader type="pacman" />
     });
     let imageArray = await this.loadImages(this.state.query);
-    let newArray = this.state.photos.concat(imageArray);
-    this.setState({
-      photos: newArray,
-      loading: ""
-    });
+    if (imageArray) {
+      let newArray = this.state.photos.concat(imageArray);
+      this.setState({
+        photos: newArray
+      });
+    }
+    this.setState({ loading: "" });
   };
 
   handleScroll = () => {
