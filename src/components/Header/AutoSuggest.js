@@ -34,23 +34,23 @@ export default class AutoSuggest extends React.Component {
     return <span>{suggestion.name}</span>;
   };
   onChange = (event, { newValue, method }) => {
-    this.setState(
-      {
-        value: newValue
-      },
-      debounce(() => {
-        this.props.handlePhotoChange(this.state.value);
-        const items = JSON.parse(window.localStorage.getItem("query"));
-        if (items) {
-          const queries = items.map(item => Object.create({ name: item }));
-          this.setState({
-            fromStorage: queries
-          });
-        }
-        this.onSuggestionsFetchRequested({ value: this.state.value });
-      }, 1000)
-    );
+    this.setState({
+      value: newValue
+    });
+    this.updateMessage();
   };
+
+  updateMessage = debounce(() => {
+    this.props.handlePhotoChange(this.state.value);
+    const items = JSON.parse(window.localStorage.getItem("query"));
+    if (items) {
+      const queries = items.map(item => Object.create({ name: item }));
+      this.setState({
+        fromStorage: queries
+      });
+    }
+    this.onSuggestionsFetchRequested({ value: this.state.value });
+  }, 1000);
 
   onSuggestionsFetchRequested = ({ value }) => {
     this.setState({
