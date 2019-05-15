@@ -189,11 +189,8 @@ export default class App extends React.Component {
   };
   hide = () => this.setState({ visible: false });
   handleScroll = () => {
-    if (
-      window.innerHeight + window.scrollY >=
-      document.getElementById("root").offsetHeight
-    ) {
-      alert("get ready");
+    alert("Go Ahead");
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
       this.reloadImage();
     }
   };
