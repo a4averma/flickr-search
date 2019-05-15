@@ -25,15 +25,6 @@ export default class App extends React.Component {
       picture: "",
       title: ""
     };
-
-    window.onscroll = () => {
-      if (
-        window.innerHeight + document.documentElement.scrollTop ===
-        document.documentElement.offsetHeight
-      ) {
-        this.reloadImage();
-      }
-    };
   }
   openModal = (title, src) => {
     this.setState({ visible: true, picture: src, title });
@@ -197,6 +188,14 @@ export default class App extends React.Component {
       });
   };
   hide = () => this.setState({ visible: false });
+  componentDidMount() {
+    let self = this;
+    window.addEventListener("scroll", function() {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+        self.reloadImage();
+      }
+    });
+  }
   render() {
     return (
       <>
