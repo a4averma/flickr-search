@@ -1,13 +1,12 @@
 import React from 'react';
 import {TextInput} from 'grommet';
+import {debounce} from 'lodash';
 
 export default class Search extends React.Component {
   state = {
     query: ''
   }
-  reloadImage = async () => {
-   this.props.handlePhotoChange(this.state.query);
-  }
+  reloadImage = debounce(() => this.props.handlePhotoChange(this.state.query), 1000)
 
   handleChange = event =>  {
     this.setState({query: event.target.value});

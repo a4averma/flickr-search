@@ -1,13 +1,13 @@
-import React from 'react';
-import AppBar from './AppBar';
-import Search from './Search';
-
+import React from "react";
+import AppBar from "./AppBar";
+import Search from "./Search";
+import AutoSuggest from "./AutoSuggest";
 function Header(props) {
-    return(
+  return (
     <AppBar>
-        <Search handlePhotoChange={props.handlePhotoChange}></Search>
+      <AutoSuggest handlePhotoChange={props.handlePhotoChange} />
     </AppBar>
-    )
+  );
 }
 
 export default Header;
