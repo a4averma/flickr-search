@@ -40,12 +40,14 @@ export default class AutoSuggest extends React.Component {
       },
       debounce(() => {
         this.props.handlePhotoChange(this.state.value);
-        let newFromStorage = this.state.fromStorage;
-        newFromStorage.push({ name: this.state.value });
-        let uniqueFromStorage = [...new Set(newFromStorage)];
-        this.setState({
-          fromStorage: uniqueFromStorage
-        });
+        const items = JSON.parse(window.localStorage.getItem("query"));
+        if (items) {
+          const queries = items.map(item => Object.create({ name: item }));
+          this.setState({
+            fromStorage: queries
+          });
+        }
+        this.onSuggestionsFetchRequested({ value: this.state.value });
       }, 1000)
     );
   };

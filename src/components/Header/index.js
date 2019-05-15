@@ -5,7 +5,10 @@ import AutoSuggest from "./AutoSuggest";
 function Header(props) {
   return (
     <AppBar>
-      <AutoSuggest handlePhotoChange={props.handlePhotoChange} />
+      <AutoSuggest
+        handlePhotoChange={props.handlePhotoChange}
+        query={props.query}
+      />
     </AppBar>
   );
 }

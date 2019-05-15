@@ -1,141 +1,40 @@
+// NPM Imports
 import React from "react";
 import Headroom from "react-headroom";
 import "normalize.css";
-import "./App.css";
-import Header from "./components/Header";
 import Image from "react-graceful-image";
 import Loader from "react-loaders";
-import "./App.scss";
 import Rodal from "rodal";
-
-// include styles
 import "rodal/lib/rodal.css";
+
+// Named Imports
+import Header from "./components/Header";
+import "./App.scss";
 
 var colours = ["#69779B", "#9692AF", "#ACDBDF", "#D7EAEA"];
 
 export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      photos: "",
-      page: 1,
-      query: "",
-      loading: "",
-      visible: false,
-      picture: "",
-      title: ""
-    };
-  }
+  state = {
+    photos: [],
+    page: 1,
+    query: "",
+    loading: "",
+    visible: false,
+    picture: "",
+    title: ""
+  };
+
   openModal = (title, src) => {
     this.setState({ visible: true, picture: src, title });
   };
-  handlePhotoChange = photos => {
-    this.setState({
-      query: photos,
-      page: 1,
-      loading: <Loader type="pacman" />,
-      photos: []
-    });
 
-    fetch(
-      `https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=68718a972b685914728b4a71cd542e28&tags=${photos}&page=${
+  hide = () => this.setState({ visible: false });
+
+  loadImages = query => {
+    return fetch(
+      `https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=68718a972b685914728b4a71cd542e28&tags=${query}&page=${
         this.state.page
       }&format=json&nojsoncallback=1`
-    )
-      .then(res => res.json())
-      .then(res => {
-        this.setState({ loading: <Loader type="pacman" /> });
-        if (res.code === 3) {
-          if (this.state.query) {
-            this.setState({
-              photos: (
-                <p>
-                  Your search -{" "}
-                  <span style={{ fontWeight: 800 }}>{this.state.query}</span> -
-                  did not match any tags.
-                </p>
-              ),
-              loading: ""
-            });
-          } else {
-            this.setState({ loading: "" });
-          }
-        } else if (res.photos.photo.length === 0) {
-          if (this.state.query) {
-            this.setState({
-              photos: (
-                <p>
-                  Your search -{" "}
-                  <span style={{ fontWeight: 800 }}>{this.state.query}</span> -
-                  did not match any tags.
-                </p>
-              ),
-              loading: ""
-            });
-          } else {
-            this.setState({ loading: "" });
-          }
-        } else {
-          this.setState({ loading: "" });
-          var imageArray = res.photos.photo.map(pic => {
-            var src =
-              "https://farm" +
-              pic.farm +
-              ".staticflickr.com/" +
-              pic.server +
-              "/" +
-              pic.id +
-              "_" +
-              pic.secret +
-              ".jpg";
-            return (
-              <div
-                className="card"
-                onClick={() => this.openModal(pic.title, src)}
-              >
-                <Image
-                  src={src}
-                  alt={pic.title}
-                  placeholderColor={
-                    colours[Math.floor(Math.random() * colours.length)]
-                  }
-                  retry={{ count: 15, delay: 3, accumulate: "add" }}
-                  className="image"
-                />
-              </div>
-            );
-          });
-          this.setState({ photos: imageArray, page: 1 });
-          if (this.state.query) {
-            if (window.localStorage.getItem("query") === null) {
-              let queries = new Array();
-              queries.push(this.state.query);
-              window.localStorage.setItem("query", JSON.stringify(queries));
-            } else {
-              let storedQueries = JSON.parse(
-                window.localStorage.getItem("query")
-              );
-              storedQueries.push(this.state.query);
-              let uniqueQueries = [...new Set(storedQueries)];
-              window.localStorage.setItem(
-                "query",
-                JSON.stringify(uniqueQueries)
-              );
-            }
-          }
-          this.setState({ loading: "" });
-        }
-      });
-  };
-  reloadImage = () => {
-    this.setState({
-      page: this.state.page + 1,
-      loading: <Loader type="pacman" />
-    });
-    fetch(
-      `https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=68718a972b685914728b4a71cd542e28&tags=${
-        this.state.query
-      }&page=${this.state.page}&format=json&nojsoncallback=1`
     )
       .then(res => res.json())
       .then(res => {
@@ -182,21 +81,60 @@ export default class App extends React.Component {
               </div>
             );
           });
-          let newArray = this.state.photos.concat(imageArray);
-          this.setState({ photos: newArray, loading: "" });
+          return imageArray;
         }
       });
   };
-  hide = () => this.setState({ visible: false });
+
+  handlePhotoChange = async query => {
+    this.setState({
+      query,
+      page: 1,
+      loading: <Loader type="pacman" />,
+      photos: []
+    });
+    let imageArray = await this.loadImages(query);
+    this.setState({ photos: imageArray, page: 1 });
+    if (this.state.query) {
+      if (window.localStorage.getItem("query") === null) {
+        let queries = [];
+        queries.push(this.state.query);
+        window.localStorage.setItem("query", JSON.stringify(queries));
+      } else {
+        let storedQueries = JSON.parse(window.localStorage.getItem("query"));
+        storedQueries.push(this.state.query);
+        let uniqueQueries = [...new Set(storedQueries)];
+        window.localStorage.setItem("query", JSON.stringify(uniqueQueries));
+      }
+    }
+    this.setState({ loading: "" });
+  };
+
+  loadMore = async () => {
+    this.setState({
+      page: this.state.page + 1,
+      loading: <Loader type="pacman" />
+    });
+    let imageArray = await this.loadImages(this.state.query);
+    this.setState({
+      photos: [...this.state.photos, ...imageArray],
+      loading: ""
+    });
+  };
+
   handleScroll = () => {
     if (
       window.innerHeight + window.scrollY + 500 >=
       document.body.offsetHeight
     ) {
-      this.reloadImage();
+      this.loadMore();
     }
   };
-  componentDidMount() {
+
+  async componentDidMount() {
+    this.setState({ loading: <Loader type="pacman" /> });
+    let initImages = await this.loadImages("cats");
+    this.setState({ photos: initImages, loading: "" });
     window.addEventListener("scroll", this.handleScroll);
   }
   componentWillUnmount() {
@@ -210,7 +148,10 @@ export default class App extends React.Component {
             boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)"
           }}
         >
-          <Header handlePhotoChange={this.handlePhotoChange} />
+          <Header
+            handlePhotoChange={this.handlePhotoChange}
+            query={this.state.query}
+          />
         </Headroom>
 
         <div
