@@ -190,11 +190,15 @@ export default class App extends React.Component {
   hide = () => this.setState({ visible: false });
   componentDidMount() {
     let self = this;
-    window.addEventListener("scroll", function() {
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-        self.reloadImage();
-      }
-    });
+    window.addEventListener(
+      "scroll",
+      function() {
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+          self.reloadImage();
+        }
+      },
+      false
+    );
   }
   render() {
     return (
