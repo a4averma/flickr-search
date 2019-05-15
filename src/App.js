@@ -116,15 +116,16 @@ export default class App extends React.Component {
       loading: <Loader type="pacman" />
     });
     let imageArray = await this.loadImages(this.state.query);
+    let newArray = this.state.photos.concat(imageArray);
     this.setState({
-      photos: [...this.state.photos, ...imageArray],
+      photos: newArray,
       loading: ""
     });
   };
 
   handleScroll = () => {
     if (
-      window.innerHeight + window.scrollY + 500 >=
+      window.innerHeight + window.scrollY + 200 >=
       document.body.offsetHeight
     ) {
       this.loadMore();
@@ -133,6 +134,7 @@ export default class App extends React.Component {
 
   async componentDidMount() {
     this.setState({ loading: <Loader type="pacman" /> });
+    this.setState({ query: "cats" });
     let initImages = await this.loadImages("cats");
     this.setState({ photos: initImages, loading: "" });
     window.addEventListener("scroll", this.handleScroll);
